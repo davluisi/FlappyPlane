@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameOver : MonoBehaviour
+public class InitialScene : MonoBehaviour
 {
-    public void BackToMenu()
+    public void tapToContinue()
     {
         SceneManager.LoadSceneAsync(1);
     }
