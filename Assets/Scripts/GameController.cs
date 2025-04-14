@@ -3,7 +3,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     float spawnTimer;
-    float spawnRate = 3f;
+    float spawnRate;
     public GameObject tubo;
     public static bool gameover;
 
@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         gameover = false;
+        spawnRate = 3f;
     }
 
     // Update is called once per frame
@@ -24,6 +25,20 @@ public class GameController : MonoBehaviour
                 spawnTimer -= spawnRate;
                 Vector2 spawnPos = new Vector2(2f, Random.Range(-1f, 2f));
                 Instantiate(tubo, spawnPos, Quaternion.identity);
+                if (Punti.valorePunti > 0 && (int)Punti.valorePunti % 10 == 0)
+                {
+                    bool giaCambiato = false;
+                    if (spawnRate == 2f && !giaCambiato)
+                    {
+                        spawnRate = 3f;
+                        giaCambiato = true;
+                    }
+                    if (spawnRate == 3f && !giaCambiato)
+                    {
+                        spawnRate = 2f;
+                        giaCambiato = true;
+                    }
+                }
             }
         }
         
