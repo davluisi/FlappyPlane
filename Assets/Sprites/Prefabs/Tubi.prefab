@@ -278,7 +278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2307356204056611682}
   - component: {fileID: 7195092806122592940}
-  - component: {fileID: -4073371464760293919}
+  - component: {fileID: 2854990030800072384}
   m_Layer: 0
   m_Name: Tubi
   m_TagString: Untagged
@@ -315,7 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 173be85d371f96443bfccf2724b29a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!82 &-4073371464760293919
+--- !u!82 &2854990030800072384
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

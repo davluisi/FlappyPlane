@@ -6,6 +6,8 @@ public class Flappy : MonoBehaviour
     public GameObject gameover;
     public GameObject restart;
     public GameObject backToMenu;
+    public GameObject sfondo;
+    public GameObject sfondoGlitch;
     public AudioClip[] audioClips;
     AudioSource audioSource;
     private bool s1HaSuonato = false;
@@ -28,6 +30,11 @@ public class Flappy : MonoBehaviour
         {
             audioSource.PlayOneShot(audioClips[1]);
             s1HaSuonato=true;
+        }
+        if (transform.position.y >= 6)
+        {
+            sfondo.SetActive(false);
+            sfondoGlitch.SetActive(true);
         }
     }
 
