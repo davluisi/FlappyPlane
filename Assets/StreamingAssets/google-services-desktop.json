@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "727791229752",
+    "project_id": "myflappy-98b4f",
+    "storage_bucket": "myflappy-98b4f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727791229752:android:5735daa825af92992fffcd",
+        "android_client_info": {
+          "package_name": "MyFlappy.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa97xN-3H24AMso506J72KZHw500CfV6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

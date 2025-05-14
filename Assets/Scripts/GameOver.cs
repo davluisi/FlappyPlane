@@ -5,6 +5,6 @@ public class GameOver : MonoBehaviour
 {
     public void BackToMenu()
     {
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadSceneAsync(2);
     }
 }
