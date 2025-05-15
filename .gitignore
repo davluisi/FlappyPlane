@@ -78,6 +78,7 @@ crashlytics-build.properties
 
 # Google
 /[Aa]ssets/[Gg]oogle*<<<<<<< HEAD
+<<<<<<< HEAD
 /[Aa]ssets/[Gg]oogle*
 =======
 /[Aa]ssets/[Gg]oogle*
