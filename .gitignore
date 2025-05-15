@@ -77,4 +77,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ff]irebase/*
 
 # Google
+/[Aa]ssets/[Gg]oogle*<<<<<<< HEAD
 /[Aa]ssets/[Gg]oogle*
+=======
+/[Aa]ssets/[Gg]oogle*
+>>>>>>> f1c5451e5af1bc20b99eb72b8217123bac1c5819
