@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      CieloChiaro_0: 6040302990727027035
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

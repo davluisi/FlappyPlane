@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id">
-  <string name="gcm_defaultSenderId" translatable="false">727791229752</string>
-  <string name="google_storage_bucket" translatable="false">myflappy-98b4f.firebasestorage.app</string>
-  <string name="project_id" translatable="false">myflappy-98b4f</string>
-  <string name="google_api_key" translatable="false">AIzaSyCa97xN-3H24AMso506J72KZHw500CfV6Q</string>
-  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCa97xN-3H24AMso506J72KZHw500CfV6Q</string>
-  <string name="google_app_id" translatable="false">1:727791229752:android:5735daa825af92992fffcd</string>
+  <string name="gcm_defaultSenderId" translatable="false">1000398824965</string>
+  <string name="google_storage_bucket" translatable="false">myflappy-2105.firebasestorage.app</string>
+  <string name="project_id" translatable="false">myflappy-2105</string>
+  <string name="google_api_key" translatable="false">AIzaSyDSp1lJpj3iBFjKcHzGTK3i3mSsozxDyT0</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDSp1lJpj3iBFjKcHzGTK3i3mSsozxDyT0</string>
+  <string name="google_app_id" translatable="false">1:1000398824965:android:21cc3638f1e7a655fc1e6c</string>
 </resources>

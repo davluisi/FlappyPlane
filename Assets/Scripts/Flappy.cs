@@ -1,11 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Flappy : MonoBehaviour
 {
     Rigidbody2D rb;
-    public GameObject gameover;
-    public GameObject restart;
-    public GameObject backToMenu;
+    public GameObject GameOverMenu;
+    public Text record;
     public GameObject sfondo;
     public GameObject sfondoGlitch;
     public AudioClip[] audioClips;
@@ -40,9 +40,26 @@ public class Flappy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        int punteggioCorrente = Punti.valorePunti;
+
         GameController.gameover = true;
-        gameover.SetActive(true);
-        restart.SetActive(true);
-        backToMenu.SetActive(true);
+        GameOverMenu.SetActive(true);
+
+        // Recupera il record salvato (se non esiste, restituisce 0)
+        int recordSalvato = PlayerPrefs.GetInt("Record", 0);
+
+        // Se il punteggio attuale è maggiore del record, aggiorna
+        if (punteggioCorrente > recordSalvato)
+        {
+            PlayerPrefs.SetInt("Record", punteggioCorrente);
+            PlayerPrefs.Save();
+            record.text = "New Record !";
+        }
+        else
+        {
+            // Altrimenti mostra il record sullo schermo
+            int recordFinale = PlayerPrefs.GetInt("Record", 0);
+            record.text = "Record: " + recordFinale;
+        }
     }
 }

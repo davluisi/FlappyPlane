@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SfondoChiaro_0: -103571986745334378
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

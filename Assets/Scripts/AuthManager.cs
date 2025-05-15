@@ -6,6 +6,9 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Collections.Generic;
+using System.Collections;
+using System;
 
 public class AuthManager : MonoBehaviour
 {
@@ -17,16 +20,43 @@ public class AuthManager : MonoBehaviour
 
     public TextMeshProUGUI feedbackText;
 
-    private FirebaseAuth auth;
+    public static FirebaseAuth auth;
+    private static AuthManager instance;
     private FirebaseUser user;
     private bool loginSuccess = false;
 
+    Color myGreen = new Color(0f, 0.6f, 0.2f); // Verde scuro
+    Color myRed = new Color(0.8f, 0f, 0f);     // Rosso acceso
 
     void Start()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
-            FirebaseApp app = FirebaseApp.DefaultInstance;
-            auth = FirebaseAuth.DefaultInstance;
+        // Singleton pattern per evitare duplicati tra scene
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            InitializeFirebase();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void InitializeFirebase()
+    {
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == DependencyStatus.Available)
+            {
+                auth = FirebaseAuth.DefaultInstance;
+                Debug.Log("Firebase inizializzato correttamente.");
+            }
+            else
+            {
+                Debug.LogError("Impossibile inizializzare Firebase: " + dependencyStatus);
+            }
         });
     }
 
@@ -35,67 +65,110 @@ public class AuthManager : MonoBehaviour
         if (loginSuccess)
         {
             loginSuccess = false; // Evita di farlo due volte
-            ShowFeedback("Login effettuato! Benvenuto, " + user.Email);
+            ShowFeedback("Welcome", myGreen);
             SceneManager.LoadSceneAsync(2);
         }
     }
 
-
-    public void Login()
+    public async void Login()
     {
+        Debug.Log("Bottone Login premuto");
         string email = loginEmailInput.text;
         string password = loginPasswordInput.text;
 
-        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
+        try
         {
-            if (task.IsCanceled || task.IsFaulted)
+            if (auth == null)
             {
-                UnityEngine.Debug.Log("Login fallito.");
-                loginSuccess = false;
+                Debug.LogError("FirebaseAuth è NULL!");
+                ShowFeedback("Errore interno: Firebase non inizializzato.", myRed);
+                return;
             }
-            else
-            {
-                user = task.Result.User;
-                loginSuccess = true;
-            }
-        });
+
+            var result = await auth.SignInWithEmailAndPasswordAsync(email, password);
+            user = result.User;
+            loginSuccess = true;
+        }
+        catch (Exception e)
+        {
+            ShowFeedback("Login failed", myRed);
+        }
     }
-    public void Register()
+
+
+    public async void Register()
     {
         string email = registerEmailInput.text;
         string password = registerPasswordInput.text;
 
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                ShowFeedback("Registrazione fallita: " + task.Exception?.Message);
-            }
-            else
-            {
-                ShowFeedback("Registrazione avvenuta! Puoi ora accedere.");
-            }
-        });
+        try
+        {
+            var result = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
+            user = result.User;
+            ShowFeedback("Registered", myGreen);
+        }
+        catch (Exception e)
+        {
+            ShowFeedback("Registration failed", myRed);
+        }
     }
 
-    public void SendPasswordReset()
+
+    public async void SendPasswordReset()
     {
         string email = resetEmailInput.text;
 
-        auth.SendPasswordResetEmailAsync(email).ContinueWith(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                ShowFeedback("Errore invio reset: " + task.Exception?.Message);
-            }
-            else
-            {
-                ShowFeedback("Email di recupero inviata.");
-            }
-        });
+        if (string.IsNullOrEmpty(email) || !IsValidEmail(email))
+        {
+            ShowFeedback("Invalid email", myRed);
+            return;
+        }
+
+        try
+        {
+            await auth.SendPasswordResetEmailAsync(email);
+            ShowFeedback("Email sent", Color.black);
+        }
+        catch (FirebaseException firebaseEx)
+        {
+            // Puoi analizzare l'eccezione per vedere il messaggio di errore specifico
+            ShowFeedback("Errore", myRed);
+        }
+        catch (Exception e)
+        {
+            // Catch altre eccezioni generiche
+            ShowFeedback("Errore", myRed);
+        }
     }
 
-    void ShowFeedback(string message)
+    // Metodo per validare la sintassi dell'email
+    private bool IsValidEmail(string email)
     {
-        Debug.Log(message);
-        feedbackText.text = message;
+        try
+        {
+            var mailAddress = new System.Net.Mail.MailAddress(email);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
+
+
+
+    private IEnumerator ClearFeedbackAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        feedbackText.text = "";
+    }
+
+    private void ShowFeedback(string message, Color color)
+    {
+        feedbackText.color = color;
+        feedbackText.text = message;
+        StartCoroutine(ClearFeedbackAfterDelay(2f)); // sparisce dopo 2 secondi
+    }
+
 }
+

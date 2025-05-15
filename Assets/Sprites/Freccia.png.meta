@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Freccia_0: -5557963343600177653
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

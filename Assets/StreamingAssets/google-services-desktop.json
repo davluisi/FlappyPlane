@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "727791229752",
-    "project_id": "myflappy-98b4f",
-    "storage_bucket": "myflappy-98b4f.firebasestorage.app"
+    "project_number": "1000398824965",
+    "project_id": "myflappy-2105",
+    "storage_bucket": "myflappy-2105.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:727791229752:android:5735daa825af92992fffcd",
+        "mobilesdk_app_id": "1:1000398824965:android:21cc3638f1e7a655fc1e6c",
         "android_client_info": {
           "package_name": "MyFlappy.android"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCa97xN-3H24AMso506J72KZHw500CfV6Q"
+          "current_key": "AIzaSyDSp1lJpj3iBFjKcHzGTK3i3mSsozxDyT0"
         }
       ],
       "services": {

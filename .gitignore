@@ -76,3 +76,5 @@ crashlytics-build.properties
 # FireBase Assets
 /[Aa]ssets/[Ff]irebase/*
 
+# Google
+/[Aa]ssets/[Gg]oogle*
