@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     public static float velocita;
     public GameObject tubo;
     public static bool gameover;
-    public GameObject sfondo;
+    public GameObject sfondoBase;
     public GameObject sfondoScuro;
     public GameObject sfondoGlitch;
 
@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour
                 spawnRate = spawnRate5;
             if (Punti.valorePunti >= 100 && !sfondoGlitch.activeSelf)
             {
-                sfondo.SetActive(false);
+                sfondoBase.SetActive(false);
                 sfondoScuro.SetActive(true);
             }
             spawnTimer += Time.deltaTime;

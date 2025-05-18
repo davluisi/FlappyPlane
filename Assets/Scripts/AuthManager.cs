@@ -1,29 +1,35 @@
 using Firebase;
 using Firebase.Auth;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Collections.Generic;
-using System.Collections;
+using Firebase.Database;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class AuthManager : MonoBehaviour
 {
     public TMP_InputField loginEmailInput;
     public TMP_InputField loginPasswordInput;
     public TMP_InputField registerEmailInput;
+    public TMP_InputField registerUsernameInput;
     public TMP_InputField registerPasswordInput;
     public TMP_InputField resetEmailInput;
 
     public TextMeshProUGUI feedbackText;
 
+    public GameObject loginMenu;
+    public GameObject registerMenu;
+
     public static FirebaseAuth auth;
     private static AuthManager instance;
     private FirebaseUser user;
     private bool loginSuccess = false;
+    private string usernameLoaded;
 
     Color myGreen = new Color(0f, 0.6f, 0.2f); // Verde scuro
     Color myRed = new Color(0.8f, 0f, 0f);     // Rosso acceso
@@ -34,8 +40,14 @@ public class AuthManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             InitializeFirebase();
+            // Precompila i campi se esistono dati salvati
+            if (PlayerPrefs.HasKey("savedEmail"))
+                loginEmailInput.text = PlayerPrefs.GetString("savedEmail");
+
+            if (PlayerPrefs.HasKey("savedPassword"))
+                loginPasswordInput.text = PlayerPrefs.GetString("savedPassword");
         }
         else
         {
@@ -65,14 +77,14 @@ public class AuthManager : MonoBehaviour
         if (loginSuccess)
         {
             loginSuccess = false; // Evita di farlo due volte
-            ShowFeedback("Welcome", myGreen);
+            ShowFeedback("Welcome " + usernameLoaded, myGreen);
             SceneManager.LoadSceneAsync(2);
         }
     }
 
+
     public async void Login()
     {
-        Debug.Log("Bottone Login premuto");
         string email = loginEmailInput.text;
         string password = loginPasswordInput.text;
 
@@ -80,13 +92,25 @@ public class AuthManager : MonoBehaviour
         {
             if (auth == null)
             {
-                Debug.LogError("FirebaseAuth è NULL!");
+                Debug.LogError("FirebaseAuth ? NULL!");
                 ShowFeedback("Errore interno: Firebase non inizializzato.", myRed);
                 return;
             }
 
             var result = await auth.SignInWithEmailAndPasswordAsync(email, password);
             user = result.User;
+
+            // Salva email e password nei PlayerPrefs
+            PlayerPrefs.SetString("savedEmail", email);
+            PlayerPrefs.SetString("savedPassword", password);
+            PlayerPrefs.Save();
+
+            // Recupera lo username dal database
+            DatabaseReference dbRef = FirebaseDatabase.GetInstance("https://myflappy-2105-default-rtdb.europe-west1.firebasedatabase.app/").RootReference;
+            DataSnapshot snapshot = await dbRef.Child("users").Child(user.UserId).Child("username").GetValueAsync();
+
+            usernameLoaded = snapshot.Exists ? snapshot.Value.ToString() : "User";
+
             loginSuccess = true;
         }
         catch (Exception e)
@@ -95,17 +119,28 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-
     public async void Register()
     {
         string email = registerEmailInput.text;
         string password = registerPasswordInput.text;
+        string username = registerUsernameInput.text;
+
+        if (string.IsNullOrEmpty(username))
+        {
+            ShowFeedback("Username richiesto", myRed);
+            return;
+        }
 
         try
         {
             var result = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
             user = result.User;
+            // Salva lo username nel Realtime Database
+            DatabaseReference dbRef = FirebaseDatabase.GetInstance("https://myflappy-2105-default-rtdb.europe-west1.firebasedatabase.app/").RootReference;
+            await dbRef.Child("users").Child(user.UserId).Child("username").SetValueAsync(username);
             ShowFeedback("Registered", myGreen);
+            registerMenu.SetActive(false);
+            loginMenu.SetActive(true);
         }
         catch (Exception e)
         {
@@ -156,7 +191,6 @@ public class AuthManager : MonoBehaviour
     }
 
 
-
     private IEnumerator ClearFeedbackAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -171,4 +205,3 @@ public class AuthManager : MonoBehaviour
     }
 
 }
-
